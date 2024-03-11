@@ -15,13 +15,13 @@ h1 {
   margin-bottom: 30px;
 }
 
-#postsContainer {
+#pokemonContainer {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
 }
 
-#postsContainer div {
+#pokemonContainer div {
   display: flex;
   justify-content: center;
   background-color: #4a4949;

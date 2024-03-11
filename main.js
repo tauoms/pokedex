@@ -14,6 +14,7 @@ let apiUrl = 'https://pokeapi.co/api/v2/pokemon?limit=500&offset=0';
 
 let pokemonsArr = [];
 
+
 const fetchData = async () => {
     try {
     const response = await fetch(apiUrl);
@@ -22,8 +23,12 @@ const fetchData = async () => {
     }
 
     const json = await response.json();
-    console.log(json);
+    // console.log(json);
     pokemonsArr = json.results;
+    pokemonsArr.forEach((pokemon) => {
+        fetchPokemonData(pokemon); 
+      });
+
     displayData(pokemonsArr);
 
     } catch (error) {
@@ -32,42 +37,36 @@ const fetchData = async () => {
     
 } 
 
+function fetchPokemonData(pokemon){
+    let url = pokemon.url
+      fetch(url)
+      .then(response => response.json())
+      .then(function(pokeData){
+      console.log(pokeData)
+      })
+    }
+
 fetchData();
 
+
 const displayData = (data) => {
-    const postsContainer = document.querySelector('#postsContainer');
-    postsContainer.innerHTML = '' // Clear previous display data
+    const pokemonContainer = document.querySelector('#pokemonContainer');
+    pokemonContainer.innerHTML = '' // Clear previous display data
 
     data.forEach ((pokemon) => {
-        const postElement = document.createElement('div');
 
-        postElement.innerHTML = `
+        const pokemonCard = document.createElement('div');
+
+        pokemonCard.innerHTML = `
         <h2>${pokemon.name}</h2>
         `;
-        postsContainer.appendChild(postElement);
-    });
+        pokemonContainer.appendChild(pokemonCard);
 
-    console.log(pokemonsArr);
+    });
 
 }
 
 // SEARCH:
-
-
-const displayResults = (data) => {
-    const postsContainer = document.querySelector('#postsContainer');
-    postsContainer.innerHTML = '' // Clear previous display data
-
-    data.forEach ((pokemon) => {
-        const postElement = document.createElement('div');
-
-        postElement.innerHTML = `
-        <h2>${pokemon.name}</h2>
-        `;
-        postsContainer.appendChild(postElement);
-    });
-
-}
 
 const searchPokemon = (searchTerm) => {
     const filteredData = pokemonsArr.filter((pokemon) => pokemon.name.toLowerCase().includes(searchTerm.toLowerCase()));
