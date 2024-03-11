@@ -14,7 +14,6 @@ let apiUrl = 'https://pokeapi.co/api/v2/pokemon?limit=500&offset=0';
 
 let pokemonsArr = [];
 
-
 const fetchData = async () => {
     try {
     const response = await fetch(apiUrl);
@@ -25,9 +24,6 @@ const fetchData = async () => {
     const json = await response.json();
     // console.log(json);
     pokemonsArr = json.results;
-    pokemonsArr.forEach((pokemon) => {
-        fetchPokemonData(pokemon); 
-      });
 
     displayData(pokemonsArr);
 
@@ -37,32 +33,36 @@ const fetchData = async () => {
     
 } 
 
-function fetchPokemonData(pokemon){
-    let url = pokemon.url
-      fetch(url)
-      .then(response => response.json())
-      .then(function(pokeData){
-      console.log(pokeData)
-      })
-    }
 
 fetchData();
-
 
 const displayData = (data) => {
     const pokemonContainer = document.querySelector('#pokemonContainer');
     pokemonContainer.innerHTML = '' // Clear previous display data
 
     data.forEach ((pokemon) => {
+        const pokemonCard = document.createElement('div')
 
-        const pokemonCard = document.createElement('div');
+        fetch(pokemon.url)
+            .then((response) => response.json())
+            .then((pokemonData) => {
+                const types = pokemonData.types.map((typeObj) => typeObj.type.name).join(', ');
 
-        pokemonCard.innerHTML = `
-        <h2>${pokemon.name}</h2>
-        `;
-        pokemonContainer.appendChild(pokemonCard);
+                pokemonCard.innerHTML = `
+                    <img src="${pokemonData.sprites.other['official-artwork'].front_default}">
+                    <h2>${pokemonData.name}</h2>
+                    <p>
+                    ID: ${pokemonData.id}<br>
+                    Height: ${pokemonData.height}"<br>
+                    Weight: ${pokemonData.weight}g<br>
+                    Type(s): ${types}
+                    </p>
 
-    });
+                    `;
+                    pokemonContainer.appendChild(pokemonCard);
+                    })
+                    
+                });
 
 }
 

@@ -17,17 +17,19 @@ h1 {
 
 #pokemonContainer {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, 1fr);
+  width: 100vw;
   gap: 20px;
 }
 
 #pokemonContainer div {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   background-color: #4a4949;
   padding: 20px;
   border-radius: 10px;
-  min-width: 200px;
+  max-width: 300px;
 }
 
 h3 {
