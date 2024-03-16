@@ -97,7 +97,7 @@ const toggleFavorite = (e) => {
     }
   }
 
-  // TOGGLE DISPLAYED BUTTON
+  // TOGGLE DISPLAYED BUTTON:
 
   const toggleButton = () => {
     if (onFavoritesPage === false) {
