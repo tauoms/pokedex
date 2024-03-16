@@ -42,6 +42,7 @@ const displayData = (data) => {
         const pokemonCard = document.createElement('div');
         const imageUrl = pokemon.sprites.other['official-artwork'].front_default ?? pokemon.sprites.other.dream_world.front_default;
         let types = pokemon.types.map(type => type.type.name).join(', ');
+        let pokeName = pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1);
 
         const isFavorite = localStorage.getItem(pokemon.name) === 'true';
         const favoriteText = isFavorite ? 'Unmark favorite' : 'Mark favorite';
@@ -51,7 +52,7 @@ const displayData = (data) => {
         pokemonCard.innerHTML = `
             <div class="idcircle">#${pokemon.id}</div>
             <img src="${imageUrl}">
-            <h2>${pokemon.name}</h2>
+            <h2>${pokeName}</h2>
             <p>
             Height: ${pokemon.height / 10} m<br>
             Weight: ${pokemon.weight / 10} kg<br>
