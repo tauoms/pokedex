@@ -46,6 +46,8 @@ const displayData = (data) => {
         const isFavorite = localStorage.getItem(pokemon.name) === 'true';
         const favoriteText = isFavorite ? 'Unmark favorite' : 'Mark favorite';
 
+        const isFavBg = isFavorite ? ' isFavorite' : '';
+
         pokemonCard.innerHTML = `
             <div class="idcircle">#${pokemon.id}</div>
             <img src="${imageUrl}">
@@ -55,7 +57,7 @@ const displayData = (data) => {
             Weight: ${pokemon.weight / 10} kg<br>
             Type(s): ${types}
             </p>
-            <button id="favButton" data-name="${pokemon.name}">${favoriteText}</button>
+            <button class="favButton${isFavBg}" data-name="${pokemon.name}">${favoriteText}</button>
             `;
             pokemonContainer.appendChild(pokemonCard);
             });
@@ -109,11 +111,11 @@ const toggleFavorite = (e) => {
     }
   }
 
- // ADD TO FAVORITES:
+ // ADD FAVORITES:
  
  const addFavorites = () => {
     document.
-      querySelectorAll('#favButton').
+      querySelectorAll('.favButton').
       forEach(button => button.addEventListener('click', toggleFavorite));
   }
 
