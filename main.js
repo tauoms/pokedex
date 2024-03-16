@@ -3,6 +3,10 @@ let apiUrl = 'https://pokeapi.co/api/v2/pokemon?limit=151&offset=0';
 let pokemonsArr = [];
 let onFavoritesPage = false;
 
+const showFavBtn = document.querySelector('#showFavorites');
+const showAllBtn = document.querySelector('#showAll');
+
+
 const fetchData = async () => {
     try {
     const response = await fetch(apiUrl);
@@ -19,7 +23,7 @@ const fetchData = async () => {
     Promise.all(fetches).then(data => {
         pokemonsArr = data;
         displayData(pokemonsArr);
-        console.log(pokemonsArr);
+        // console.log(pokemonsArr);
     })
 
     } catch (error) {
@@ -27,7 +31,6 @@ const fetchData = async () => {
     }
     
 } 
-
 
 fetchData();
 
@@ -41,7 +44,7 @@ const displayData = (data) => {
         let types = pokemon.types.map(type => type.type.name).join(', ');
 
         const isFavorite = localStorage.getItem(pokemon.name) === 'true';
-    const favoriteText = isFavorite ? 'Unmark favorite' : 'Mark favorite';
+        const favoriteText = isFavorite ? 'Unmark favorite' : 'Mark favorite';
 
         pokemonCard.innerHTML = `
             <div class="idcircle">#${pokemon.id}</div>
@@ -55,7 +58,7 @@ const displayData = (data) => {
             <button id="favButton" data-name="${pokemon.name}">${favoriteText}</button>
             `;
             pokemonContainer.appendChild(pokemonCard);
-            })
+            });
             addFavorites();
 
         };
@@ -87,10 +90,22 @@ const toggleFavorite = (e) => {
     localStorage.setItem(pokemonName, !isFavorite);
   
     if (onFavoritesPage === true) {
-      const favoritePokemons = pokemonsArr.filter((pokemon) => localStorage.getItem(pokemon.name) === 'true');
-      displayData(favoritePokemons);
+      const favoritesArr = pokemonsArr.filter((pokemon) => localStorage.getItem(pokemon.name) === 'true');
+      displayData(favoritesArr);
     } else {
       displayData(pokemonsArr);
+    }
+  }
+
+  // TOGGLE DISPLAYED BUTTON
+
+  const toggleButton = () => {
+    if (onFavoritesPage === false) {
+        showFavBtn.style.display = 'inline';
+        showAllBtn.style.display = 'none';
+    } else {
+        showFavBtn.style.display = 'none';
+        showAllBtn.style.display = 'inline';
     }
   }
 
@@ -102,17 +117,23 @@ const toggleFavorite = (e) => {
       forEach(button => button.addEventListener('click', toggleFavorite));
   }
 
-// EVENT LISTENERS:
+// SHOW FAVORITES
 
-document.querySelector('#search-pokemon').addEventListener('input', (e) => searchPokemon(e.target.value));
-
-document.querySelector('#showFavorites').addEventListener('click', () => {
-    const favoritePokemons = pokemonsArr.filter((pokemon) => localStorage.getItem(pokemon.name) === 'true');
+showFavBtn.addEventListener('click', () => {
+    const favoritesArr = pokemonsArr.filter((pokemon) => localStorage.getItem(pokemon.name) === 'true');
     onFavoritesPage = true;
-    displayData(favoritePokemons);
+    toggleButton();
+    displayData(favoritesArr);
   });
   
-  document.querySelector('#showAll').addEventListener('click', () => {
+
+  // SHOW ALL:
+
+ showAllBtn.addEventListener('click', () => {
     onFavoritesPage = false;
-    displayData(pokemons);
+    toggleButton();
+    displayData(pokemonsArr);
   });
+
+  // SEARCH EVENT LISTENER:
+document.querySelector('#search-pokemon').addEventListener('input', (e) => searchPokemon(e.target.value));

@@ -16,6 +16,7 @@ header {
 
 h1 {
   margin-bottom: 30px;
+  letter-spacing: 1.5px;
 }
 
 #pokemonContainer {
@@ -72,9 +73,31 @@ p {
   height: 20px;
   border-radius: 50%;
   margin: 0;
-  align-self: flex-end;
 }
 
 #search-pokemon {
   margin-bottom: 30px;
+}
+
+#showFavorites {
+  display: inline;
+}
+
+#showAll {
+  display: none;
+}
+
+button {
+  background-color: antiquewhite;
+  padding: 8px 10px;
+  margin: 0 10px;
+  border-radius: 25px;
+  border: 1px solid #333;
+}
+
+input[type="text"] {
+  padding: 8px 10px;
+  margin: 0 10px;
+  border-radius: 25px;
+  border: 1px solid #333;
 }
