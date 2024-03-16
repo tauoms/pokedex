@@ -10,9 +10,10 @@
 
 // ASYNC / AWAIT VERSION:
 
-let apiUrl = 'https://pokeapi.co/api/v2/pokemon?limit=500&offset=0';
+let apiUrl = 'https://pokeapi.co/api/v2/pokemon?limit=151&offset=0';
 
 let pokemonsArr = [];
+let onFavoritesPage = false;
 
 const fetchData = async () => {
     try {
@@ -23,9 +24,15 @@ const fetchData = async () => {
 
     const json = await response.json();
     // console.log(json);
-    pokemonsArr = json.results;
 
-    displayData(pokemonsArr);
+    const fetches = await json.results.map((item) => {
+        return fetch(item.url).then((res) => res.json());
+      });
+    Promise.all(fetches).then(data => {
+        pokemonsArr = data;
+        displayData(pokemonsArr);
+        console.log(pokemonsArr);
+    })
 
     } catch (error) {
         console.error(error);
@@ -42,36 +49,41 @@ const displayData = (data) => {
 
     data.forEach ((pokemon) => {
         const pokemonCard = document.createElement('div')
-
-        fetch(pokemon.url)
-            .then((response) => response.json())
-            .then((pokemonData) => {
-                const types = pokemonData.types.map((typeObj) => typeObj.type.name).join(', ');
+        let types = pokemon.types.map(type => type.type.name).join(', ');
 
                 pokemonCard.innerHTML = `
-                    <img src="${pokemonData.sprites.other['official-artwork'].front_default}">
-                    <h2>${pokemonData.name}</h2>
+                    <img src="${pokemon.sprites.other['official-artwork'].front_default}">
+                    <h2>${pokemon.name}</h2>
                     <p>
-                    ID: ${pokemonData.id}<br>
-                    Height: ${pokemonData.height}"<br>
-                    Weight: ${pokemonData.weight}g<br>
+                    ID: ${pokemon.id}<br>
+                    Height: ${pokemon.height / 10} m<br>
+                    Weight: ${pokemon.weight / 10} kg<br>
                     Type(s): ${types}
                     </p>
-
                     `;
                     pokemonContainer.appendChild(pokemonCard);
                     })
                     
-                });
+                };
 
-}
+
 
 // SEARCH:
 
-const searchPokemon = (searchTerm) => {
+const debounce = (func, delay) => {
+    let debounceTimer;
+    return function () {
+      const context = this;
+      const args = arguments;
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => func.apply(context, args), delay);
+    };
+  };
+
+const searchPokemon = debounce((searchTerm) => {
     const filteredData = pokemonsArr.filter((pokemon) => pokemon.name.toLowerCase().includes(searchTerm.toLowerCase()));
     
     displayData(filteredData);
-}
+}, 300);
 
 document.querySelector('#search-pokemon').addEventListener('input', (e) => searchPokemon(e.target.value));
