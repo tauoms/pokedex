@@ -138,5 +138,5 @@ showFavBtn.addEventListener('click', () => {
     displayData(pokemonsArr);
   });
 
-  // SEARCH EVENT LISTENER:
+  // Search Event Listener:
 document.querySelector('#search-pokemon').addEventListener('input', (e) => searchPokemon(e.target.value));

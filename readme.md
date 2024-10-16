@@ -13,6 +13,10 @@ This project is a simple web-based Pokédex using the PokéAPI. It displays the 
 
 ![Screenshot 2024-10-16 at 14 07 45](https://github.com/user-attachments/assets/eb488abd-3f74-4e94-bb4f-91fe1bae1185)
 
+## Live Site
+
+[https://tauoms.github.io/pokedex/](https://tauoms.github.io/pokedex/)
+
 ## Installation
 
 1. Clone the repository:
